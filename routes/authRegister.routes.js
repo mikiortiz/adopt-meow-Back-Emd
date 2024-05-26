@@ -1,5 +1,5 @@
 const express = require("express");
-const validatorSchema = require("../schemas/schemas.validator.js");
+const validatorSchema = require("../middlewares/validator.middleware.js");
 const {
   registerSchema,
   loginSchema,
