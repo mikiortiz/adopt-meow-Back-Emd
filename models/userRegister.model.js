@@ -18,6 +18,14 @@ const userRegisterSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
+    userType: {
+      type: String,
+      enum: ["owner", "adopter"],
+      required: true,
+    },
+    image: {
+      type: String,
+    },
   },
   { timestamps: true }
 );

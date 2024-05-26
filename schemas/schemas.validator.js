@@ -8,6 +8,10 @@ const registerSchema = Yup.object().shape({
     .min(6, "La contraseña debe tener al menos 6 caracteres")
     .required("La contraseña es requerida"),
   username: Yup.string().required("El nombre de usuario es requerido"),
+  userType: Yup.string()
+    .oneOf(["owner", "adopter"], "Tipo de usuario no válido")
+    .required("El tipo de usuario es requerido"),
+  image: Yup.string().url("Debe ser una URL válida para la imagen del usuario"),
 });
 
 const loginSchema = Yup.object().shape({
