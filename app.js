@@ -6,7 +6,7 @@ const cors = require("cors");
 
 // Importación de rutas
 const authRouter = require("./routes/authRegister.routes.js");
-
+const catsRoutes = require("./routes/cats");
 const app = express();
 
 // Coneccón a base de datos
@@ -32,6 +32,7 @@ app.use(express.static(path.join(__dirname, "public")));
 
 // Montar rutas
 app.use("/api", authRouter);
+app.use("/api", catsRoutes);
 
 // Middlewares de errores
 app.use(function (req, res, next) {
