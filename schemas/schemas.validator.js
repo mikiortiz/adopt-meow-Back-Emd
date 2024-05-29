@@ -11,6 +11,9 @@ const registerSchema = Yup.object().shape({
   userType: Yup.string()
     .oneOf(["owner", "adopter"], "Tipo de usuario no válido")
     .required("El tipo de usuario es requerido"),
+  image: Yup.string()
+    .url("Debe ser una URL válida")
+    .required("La URL de la imagen es requerida"),
 });
 
 const loginSchema = Yup.object().shape({

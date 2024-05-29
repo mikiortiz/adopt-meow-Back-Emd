@@ -11,10 +11,6 @@ const catSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
-    color: {
-      type: String,
-      required: true,
-    },
     sex: {
       type: String,
       enum: ["male", "female"],
@@ -53,6 +49,10 @@ const catSchema = new mongoose.Schema(
     lng: {
       type: Number,
       required: true,
+    },
+    image: {
+      type: String,
+      required: true, // Puedes establecerlo como requerido si todas las cuentas deben tener una imagen
     },
   },
   {

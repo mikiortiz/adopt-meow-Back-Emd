@@ -29,18 +29,13 @@ const register = async (req, res) => {
     // Hash de la contraseña
     const passwordHash = await bcrypt.hash(password, 10);
 
-    if (image) {
-      const imageBuffer = Buffer.from(image, "base64");
-      const imagePath = path.join(__dirname, `../uploads/${email}-profile.png`);
-      fs.writeFileSync(imagePath, imageBuffer);
-    }
     // Crear un nuevo usuario
     const newUser = new userRegistration({
       username,
       email,
       password: passwordHash,
       userType,
-      image: `/uploads/${email}-profile.png`,
+      image,
     });
 
     // Guardar el usuario en la base de datos

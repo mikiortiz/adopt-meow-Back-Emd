@@ -25,6 +25,7 @@ const userRegisterSchema = new mongoose.Schema(
     },
     image: {
       type: String,
+      required: true, // Puedes establecerlo como requerido si todas las cuentas deben tener una imagen
     },
   },
   { timestamps: true }
