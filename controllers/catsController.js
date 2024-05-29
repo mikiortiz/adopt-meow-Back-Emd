@@ -5,20 +5,20 @@ const createCat = async (req, res) => {
   const userId = req.user.id;
 
   try {
-    // Validar el cuerpo de la solicitud con el esquema de Yup
     await catSchema.validate(req.body, { abortEarly: false });
 
     const newCat = new Cat({ ...req.body, ownerId: userId });
-
     const savedCat = await newCat.save();
 
-    res.status(201).json(savedCat);
+    res.status(201).json(savedCat); // Devuelve el objeto del gato creado
   } catch (error) {
     if (error.name === "ValidationError") {
-      const yupErrors = error.inner.map((err) => ({
-        path: err.path,
-        message: err.message,
-      }));
+      const yupErrors = error.inner
+        ? error.inner.map((err) => ({
+            path: err.path,
+            message: err.message,
+          }))
+        : [];
       return res.status(400).json({ errors: yupErrors });
     }
     console.error("Error al crear el gato:", error);
@@ -27,10 +27,9 @@ const createCat = async (req, res) => {
 };
 
 const getCats = async (req, res) => {
-  const userId = req.user.id; // ID del usuario autenticado
+  const userId = req.user.id;
 
   try {
-    // Buscar los gatos que pertenecen al usuario autenticado
     const cats = await Cat.find({ ownerId: userId }).populate(
       "ownerId",
       "username email"
@@ -74,7 +73,7 @@ const deleteCat = async (req, res) => {
 module.exports = {
   createCat,
   getCats,
+
   updateCat,
   deleteCat,
-  getUserCats,
 };

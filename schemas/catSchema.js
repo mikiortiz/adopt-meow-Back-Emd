@@ -3,7 +3,6 @@ const Yup = require("yup");
 const catSchema = Yup.object().shape({
   name: Yup.string().required("El nombre es requerido"),
   age: Yup.number().required("La edad es requerida"),
-  color: Yup.string().required("El color es requerido"),
   sex: Yup.string()
     .oneOf(["male", "female"], 'El sexo debe ser "male" o "female"')
     .required("El sexo es requerido"),
@@ -17,6 +16,9 @@ const catSchema = Yup.object().shape({
   vaccinations: Yup.string().required("Las vacunas son requeridas"),
   lat: Yup.number().required("La latitud es requerida"),
   lng: Yup.number().required("La longitud es requerida"),
+  image: Yup.string()
+    .url("Debe ser una URL válida")
+    .required("La URL de la imagen es requerida"),
 });
 
 module.exports = catSchema;
