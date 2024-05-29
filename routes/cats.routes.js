@@ -5,6 +5,7 @@ const {
   getCats,
   updateCat,
   deleteCat,
+  getUserCats,
 } = require("../controllers/catsController");
 const authRequired = require("../middlewares/validateToken");
 
@@ -13,6 +14,9 @@ router.post("/cats", authRequired, createCat);
 
 // Ruta: obtener todos los gatos
 router.get("/cats", authRequired, getCats);
+
+// Ruta: Obtener los gatos del usuario autenticado
+router.get("/user-cats", authRequired, getUserCats);
 
 // Ruta: actualizar un gato por ID
 router.put("/cats/:id", authRequired, updateCat);

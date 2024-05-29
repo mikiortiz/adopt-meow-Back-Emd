@@ -2,22 +2,13 @@ const Cat = require("../models/cat.model.js");
 const catSchema = require("../schemas/catSchema.js");
 
 const createCat = async (req, res) => {
-  const { name, age, color, sex, castrated, description } = req.body;
   const userId = req.user.id;
 
   try {
     // Validar el cuerpo de la solicitud con el esquema de Yup
     await catSchema.validate(req.body, { abortEarly: false });
 
-    const newCat = new Cat({
-      name,
-      age,
-      color,
-      sex,
-      castrated,
-      description,
-      ownerId: userId,
-    });
+    const newCat = new Cat({ ...req.body, ownerId: userId });
 
     const savedCat = await newCat.save();
 
@@ -36,8 +27,14 @@ const createCat = async (req, res) => {
 };
 
 const getCats = async (req, res) => {
+  const userId = req.user.id; // ID del usuario autenticado
+
   try {
-    const cats = await Cat.find().populate("createdBy", "username email");
+    // Buscar los gatos que pertenecen al usuario autenticado
+    const cats = await Cat.find({ ownerId: userId }).populate(
+      "ownerId",
+      "username email"
+    );
     res.status(200).json(cats);
   } catch (error) {
     console.error("Error al obtener los gatos:", error);
@@ -48,13 +45,9 @@ const getCats = async (req, res) => {
 // Actualizar un gato
 const updateCat = async (req, res) => {
   const { id } = req.params;
-  const { name, age, breed, color } = req.body;
+
   try {
-    const updatedCat = await Cat.findByIdAndUpdate(
-      id,
-      { name, age, breed, color },
-      { new: true }
-    );
+    const updatedCat = await Cat.findByIdAndUpdate(id, req.body, { new: true });
     if (!updatedCat) {
       return res.status(404).json({ message: "Gato no encontrado" });
     }
@@ -83,4 +76,5 @@ module.exports = {
   getCats,
   updateCat,
   deleteCat,
+  getUserCats,
 };

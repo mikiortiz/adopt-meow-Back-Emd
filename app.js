@@ -3,10 +3,12 @@ const path = require("path");
 const logger = require("morgan");
 const connectDB = require("./connectDB.js");
 const cors = require("cors");
+const bodyParser = require('body-parser');
+const fs = require('fs');
 
 // Importación de rutas
 const authRouter = require("./routes/authRegister.routes.js");
-const catsRoutes = require("./routes/cats");
+const catsRoutes = require("./routes/cats.routes.js");
 const app = express();
 
 // Coneccón a base de datos
@@ -33,6 +35,10 @@ app.use(express.static(path.join(__dirname, "public")));
 // Montar rutas
 app.use("/api", authRouter);
 app.use("/api", catsRoutes);
+
+// Middleware para parsear las solicitudes
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json({ limit: '15MB' }));
 
 // Middlewares de errores
 app.use(function (req, res, next) {
