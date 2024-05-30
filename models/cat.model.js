@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const { number } = require("yup");
 
 const catSchema = new mongoose.Schema(
   {
@@ -52,7 +51,17 @@ const catSchema = new mongoose.Schema(
     },
     image: {
       type: String,
-      required: true, // Puedes establecerlo como requerido si todas las cuentas deben tener una imagen
+      required: true,
+    },
+    adopterId: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "userRegistration",
+      },
+    ],
+    adopted: {
+      type: Boolean,
+      default: false,
     },
   },
   {
