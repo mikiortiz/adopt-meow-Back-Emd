@@ -26,7 +26,7 @@ const catSchema = new mongoose.Schema(
     },
     ownerId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+      
       required: true,
     },
     weight: {
@@ -56,7 +56,7 @@ const catSchema = new mongoose.Schema(
     adopterId: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "userRegistration",
+        
       },
     ],
     adopted: {
