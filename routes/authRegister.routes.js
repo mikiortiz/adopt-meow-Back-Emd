@@ -10,6 +10,7 @@ const {
   logout,
   profile,
   verifyToken,
+  getAllUsers,
 } = require("../controllers/auth.controller.js");
 const authRequired = require("../middlewares/validateToken.js");
 
@@ -19,6 +20,7 @@ const router = express.Router();
 router.post("/register", validatorSchema(registerSchema), register);
 router.post("/login", validatorSchema(loginSchema), login);
 router.post("/logout", logout);
+router.get("/users", authRequired, getAllUsers);
 
 router.get("/verify", verifyToken);
 router.get("/profile", authRequired, profile);
