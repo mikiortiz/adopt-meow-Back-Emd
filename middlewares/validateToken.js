@@ -7,6 +7,7 @@ const authRequired = (req, res, next) => {
 
   console.log("Token recibido:", token);
 
+  
   if (!token) {
     console.log("No se proporcionó un token, autorización denegada");
     return res
