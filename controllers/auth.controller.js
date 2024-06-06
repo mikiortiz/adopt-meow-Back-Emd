@@ -11,13 +11,11 @@ const register = async (req, res) => {
   const { email, password, username, userType, image } = req.body;
 
   try {
-    // Validar el esquema de validación Yup
     await registerSchema.validate(
       { email, password, username, userType, image },
       { abortEarly: false }
     );
 
-    // Verificar si el usuario ya existe
     const userFound = await userRegistration.findOne({ email });
 
     if (userFound) {
@@ -26,10 +24,8 @@ const register = async (req, res) => {
         .json({ message: "El correo electrónico ya está en uso" });
     }
 
-    // Hash de la contraseña
     const passwordHash = await bcrypt.hash(password, 10);
 
-    // Crear un nuevo usuario
     const newUser = new userRegistration({
       username,
       email,
@@ -38,13 +34,10 @@ const register = async (req, res) => {
       image,
     });
 
-    // Guardar el usuario en la base de datos
     const userSaved = await newUser.save();
 
-    // Crear token de acceso
     const token = await createAccessToken({ id: userSaved._id });
 
-    // Devolver respuesta con el token y los datos del usuario registrado
     res.setHeader("Authorization", `Bearer ${token}`);
     res.json({
       id: userSaved._id,
@@ -75,15 +68,12 @@ const login = async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    // Validar el esquema de validación Yup para inicio de sesión
     await loginSchema.validate({ email, password }, { abortEarly: false });
 
-    // Buscar al usuario por su email
     const userFound = await userRegistration.findOne({ email });
     if (!userFound)
       return res.status(400).json({ message: "Usuario no encontrado" });
 
-    // Verificar la contraseña
     const isMatch = await bcrypt.compare(password, userFound.password);
 
     if (!isMatch)
@@ -91,10 +81,8 @@ const login = async (req, res) => {
         .status(400)
         .json({ message: "Los datos ingresados no son válidos" });
 
-    // Crear token de acceso
     const token = await createAccessToken({ id: userFound._id });
 
-    // Devolver respuesta con el token y los datos del usuario autenticado
     res.setHeader("Authorization", `Bearer ${token}`);
     res.json({
       id: userFound._id,
@@ -120,8 +108,6 @@ const login = async (req, res) => {
 };
 
 const logout = (req, res) => {
-  // No es necesario manipular el token en el backend para realizar logout
-  // El frontend debe encargarse de eliminar el token del almacenamiento local
   return res.sendStatus(200);
 };
 
@@ -137,12 +123,10 @@ const getAllUsers = async (req, res) => {
 
 const profile = async (req, res) => {
   try {
-    // Buscar al usuario por su ID
     const userFound = await userRegistration.findById(req.user.id);
     if (!userFound)
       return res.status(400).json({ message: "Usuario no encontrado" });
 
-    // Devolver los datos del usuario
     return res.json({
       id: userFound._id,
       username: userFound.username,
@@ -170,7 +154,6 @@ const verifyToken = async (req, res) => {
     const userFound = await userRegistration.findById(user.id);
     if (!userFound) return res.status(401).json({ message: "No autorizado" });
 
-    // Devolver los datos del usuario autenticado
     return res.json({
       id: userFound._id,
       username: userFound.username,
@@ -181,6 +164,27 @@ const verifyToken = async (req, res) => {
   });
 };
 
+const getUserById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const user = await userRegistration.findById(id);
+    if (!user) return res.status(404).json({ message: "Usuario no encontrado" });
+
+    res.json({
+      id: user._id,
+      username: user.username,
+      email: user.email,
+      userType: user.userType,
+      image: user.image,
+      createdAt: user.createdAt,
+      updatedAt: user.updatedAt,
+    });
+  } catch (error) {
+    console.error("Error al obtener el usuario por ID:", error);
+    res.status(500).json({ message: "Error al obtener el usuario" });
+  }
+};
+
 module.exports = {
   register,
   login,
@@ -188,4 +192,5 @@ module.exports = {
   profile,
   verifyToken,
   getAllUsers,
+  getUserById,
 };
