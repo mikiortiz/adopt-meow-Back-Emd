@@ -86,7 +86,6 @@ const addAdopter = async (req, res) => {
 
 const adoptCat = async (req, res) => {
   const { id } = req.params;
-  const userId = req.user.id;
   const { adopterId } = req.body; // Obtener adopterId del cuerpo de la solicitud
 
   try {
@@ -97,8 +96,9 @@ const adoptCat = async (req, res) => {
     }
 
     if (adopterId) {
-      cat.adopted = true;
-      cat.adopterId.push(adopterId);
+      if (!cat.adopterId.includes(adopterId)) {
+        cat.adopterId.push(adopterId);
+      }
     } else {
       return res.status(400).json({ message: "Se requiere adopterId" });
     }
