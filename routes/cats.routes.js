@@ -6,6 +6,7 @@ const {
   deleteCat,
   getAllCats,
   adoptCat,
+  updateCatOwner,
 } = require("../controllers/catsController");
 const authRequired = require("../middlewares/validateToken");
 
@@ -23,5 +24,8 @@ router.delete("/cats/:id", authRequired, deleteCat);
 
 // Ruta: marcar un gato como adoptado
 router.put("/cats/:id/adopted", authRequired, adoptCat);
+
+//Ruta: actualización ownerID
+router.put("/cats/:id/update-owner", authRequired, updateCatOwner);
 
 module.exports = router;

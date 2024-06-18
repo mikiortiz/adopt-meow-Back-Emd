@@ -112,6 +112,26 @@ const adoptCat = async (req, res) => {
   }
 };
 
+const updateCatOwner = async (req, res) => {
+  const { id } = req.params; // ID del gato
+  const { newOwnerId } = req.body; // ID del nuevo propietario
+
+  try {
+    const cat = await Cat.findById(id);
+    if (!cat) {
+      return res.status(404).json({ message: "Gato no encontrado" });
+    }
+
+    cat.ownerId = newOwnerId;
+    const updatedCat = await cat.save();
+
+    res.status(200).json(updatedCat);
+  } catch (error) {
+    console.error("Error al actualizar el propietario del gato:", error);
+    res.status(500).json({ message: "Error al actualizar el propietario del gato", error });
+  }
+};
+
 module.exports = {
   createCat,
   getAllCats,
@@ -119,4 +139,5 @@ module.exports = {
   deleteCat,
   addAdopter,
   adoptCat,
+  updateCatOwner,
 };
