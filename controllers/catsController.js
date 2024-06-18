@@ -123,6 +123,8 @@ const updateCatOwner = async (req, res) => {
     }
 
     cat.ownerId = newOwnerId;
+    cat.adopted = true;
+
     const updatedCat = await cat.save();
 
     res.status(200).json(updatedCat);
