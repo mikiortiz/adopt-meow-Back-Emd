@@ -130,7 +130,36 @@ const updateCatOwner = async (req, res) => {
     res.status(200).json(updatedCat);
   } catch (error) {
     console.error("Error al actualizar el propietario del gato:", error);
-    res.status(500).json({ message: "Error al actualizar el propietario del gato", error });
+    res
+      .status(500)
+      .json({ message: "Error al actualizar el propietario del gato", error });
+  }
+};
+
+const removeAdopter = async (req, res) => {
+  const { id } = req.params; // ID del gato
+  const userId = req.user.id; // ID del usuario en sesión
+
+  try {
+    const cat = await Cat.findById(id);
+    if (!cat) {
+      return res.status(404).json({ message: "Gato no encontrado" });
+    }
+
+    const adopterIndex = cat.adopterId.indexOf(userId);
+    if (adopterIndex > -1) {
+      cat.adopterId.splice(adopterIndex, 1);
+      await cat.save();
+    } else {
+      return res
+        .status(400)
+        .json({ message: "El usuario no es adoptante de este gato" });
+    }
+
+    res.status(200).json(cat);
+  } catch (error) {
+    console.error("Error al eliminar adoptante:", error);
+    res.status(500).json({ message: "Error al eliminar adoptante", error });
   }
 };
 
@@ -142,4 +171,5 @@ module.exports = {
   addAdopter,
   adoptCat,
   updateCatOwner,
+  removeAdopter, // Añadido nuevo método
 };
