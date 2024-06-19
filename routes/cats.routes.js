@@ -28,4 +28,7 @@ router.put("/cats/:id/adopted", authRequired, adoptCat);
 //Ruta: actualización ownerID
 router.put("/cats/:id/update-owner", authRequired, updateCatOwner);
 
+//Ruta: remover el id del usuario en cesion del arrai de un gatito
+router.delete("/cats/:id/remove-adopter", authMiddleware, removeAdopter);
+
 module.exports = router;
