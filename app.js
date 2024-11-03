@@ -15,7 +15,7 @@ const app = express();
 connectDB();
 //configuración cors
 const corsOptions = {
-  origin: ["http://localhost:5173", "http://localhost:8081"],
+  origin: ["http://localhost:5173", "http://localhost:8081", "https://adopt-meow-web.netlify.app/"],
   credentials: true,
   exposedHeaders: ["authorization"],
 };
