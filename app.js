@@ -6,6 +6,8 @@ const cors = require("cors");
 const bodyParser = require('body-parser');
 const fs = require('fs');
 
+
+
 // Importación de rutas
 const authRouter = require("./routes/authRegister.routes.js");
 const catsRoutes = require("./routes/cats.routes.js");
