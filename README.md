@@ -1,5 +1,5 @@
-# Adopt-Meow 🐱
-
+# Adopt-Meow 
+[![Dise-o-sin-t-tulo-1.png](https://i.postimg.cc/MK6VKCmd/Dise-o-sin-t-tulo-1.png)](https://postimg.cc/JtFGpdgk)
 ## Índice
 - [Descripción del Proyecto](#descripción-del-proyecto)
 - [Instalación](#instalación)
