@@ -6,18 +6,16 @@ const cors = require("cors");
 const bodyParser = require('body-parser');
 const fs = require('fs');
 
-
-
 // Importación de rutas
 const authRouter = require("./routes/authRegister.routes.js");
 const catsRoutes = require("./routes/cats.routes.js");
 const app = express();
 
-// Coneccón a base de datos
+// Conección a base de datos
 connectDB();
-//configuración cors
+
 const corsOptions = {
-  origin: ["http://localhost:5173", "http://localhost:8081", "https://adopt-meow-web.netlify.app/"],
+  origin: "*",  // Solicitudes abiertas
   credentials: true,
   exposedHeaders: ["authorization"],
 };
@@ -27,7 +25,7 @@ app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "jade");
 
 // Middlewares
-app.use(cors(corsOptions));
+app.use(cors(corsOptions)); 
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
